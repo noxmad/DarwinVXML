@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+
+    <form id="ApointmentServices">
+        
+        <field name="selectApointmentService">
+            
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        Please select one of the two options
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I did not understand.Please select either to book
+                        an apointment or to Check/cancell an apointment.
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        It seems you are not willing to use our services. Goodbye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please try again.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <!-- Main message spoken to the user -->
+            <prompt>
+                <sentence>
+                    Please, <emphasis> <enumerate/> </emphasis>
+                </sentence>
+            </prompt>
+
+            <!-- Apointment Options -->
+            <option dtmf="1" value="BookApointment"> Book apointment </option>
+            <option dtmf="2" value="CheckCancellApointment"> Check - Cancel apointment </option>
+
+
+            <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
+            <filled>
+                <if cond="selectApointmentService=='BookApointment' ">
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to book an apointment.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="BookApointment.vxml"/>
+                  
+                 <else/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected check - cancel apointment.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="Ruoran-Noa...vxml"/>
+                    
+                </if>
+            </filled>
+        </field>
+    </form>
+
+
+</vxml>

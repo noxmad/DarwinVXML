@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+
+    <form id="BookApointmentScenario2SelectDoctor">
+        <field name="SelectDoctor">
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        This is not what I ask.Please answer my question.
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I am asking.Please say yes or no.
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        I am sorry but I could not understand you.GoodBye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please say or type your password.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+            <catch event="exit">
+                <prompt>
+                    <Sentence>
+                        Thanks for calling.Goodbye!
+                    </Sentence>
+                </prompt>
+                <exit/>
+            </catch>
+            <prompt>
+                <paragraph>
+                    <sentence>
+                        Please, <emphasis> <enumerate/> </emphasis>
+                    </sentence>
+                </paragraph>
+            </prompt>
+
+       
+
+            <option dtmf="1" value="Doctor1"> Dr Jones </option>
+            <option dtmf="2" value="Doctor2"> Dr Rob </option>
+            <option dtmf="3" value="Doctor3"> Dr George </option>
+            <option dtmf="4" value="Doctor4"> Dr Keith </option>
+
+
+            <!--possible doctor choices-->
+            <filled>
+                <if cond="SelectDoctor=='Doctor1'">
+                    <prompt>
+                        <sentence>
+                            You have selected Dr Jones.
+                        </sentence>
+                    </prompt>
+                    <goto next="BookTheApointment.vxml"/>
+
+                <elseif cond="SelectDoctor=='Doctor2'"/>
+                    <prompt>
+                        <sentence>
+                            You have selected Dr Rob.
+                        </sentence>
+                    </prompt>
+                    <goto next="BookTheApointment.vxml"/>
+
+                <elseif cond="SelectDoctor=='Doctor3'"/>
+                    <prompt>
+                        <sentence>
+                            You have selected Dr George.
+                        </sentence>
+                    </prompt>
+                    <goto next="BookTheApointment.vxml"/>
+
+                <elseif cond="SelectDoctor=='Doctor4'"/>
+                    <prompt>
+                            <sentence>
+                                You have selected Dr Keith.
+                            </sentence>
+                    </prompt>
+                    <goto next="BookTheApointment.vxml"/>
+
+                </if>
+            </filled>
+        </field>
+    </form>
+
+
+
+</vxml>

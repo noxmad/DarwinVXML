@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+
+
+    <!-- form to collect user respond if he/she wants to get to the main menu WHEN the reception is closed -->
+    <form id="AskUserForPass">
+        <field name="answer">
+            
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        This is a wrong password. Please try again!
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time you input a wrong password. The third time is 
+                        your last.
+                    </sentence>
+                </prompt>
+            </nomatch>        
+            <nomatch count="3">
+                It seems you dont know your password. Please contact reception and come again later.
+                GoodBye!
+                <exit/>
+            </nomatch>
+            
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please say or type your password.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    In order to proceed to the appointment services you must have a password.
+                    <emphasis> Do you have a password ?</emphasis> 
+                </sentence>
+            </prompt>
+
+            <grammar root="AskForPassGR" tag-format="semantics/1.0-literals">
+                <rule id="AskForPassGR" scope="public">
+                    <one-of>
+                        <item>
+                            <ruleref uri="#yes"/>
+                            <tag>yes</tag>
+                        </item>
+                        <item>
+                            <ruleref uri="#no"/>
+                            <tag>no</tag>
+                        </item>
+                    </one-of>
+                </rule>
+                <rule id="yes">
+                    <one-of>
+                        <item>yes</item>
+                        <item>yeah</item>
+                        <item>yep</item>
+                        <item>sure</item>
+                    </one-of>
+                </rule>
+                <rule id="no">
+                    <one-of>
+                        <item>no</item>
+                        <item>not</item>
+                        <item>nope</item>
+                    </one-of>
+                </rule>
+            </grammar>
+
+            <filled>
+                <if cond="answer=='yes'">
+                    <prompt>
+                        <sentence>
+                            You can proceed to the verification step.
+                        </sentence>
+                    </prompt>
+                    <goto next="#ApointmentServicesValidate"/>
+
+                    <else/>
+                    <prompt>
+                        <sentence>
+                            Because you do not have a password you must speak to reception, and
+                            create one.
+                        </sentence>
+                    </prompt>
+                    <goto next="SpeakToReception.vxml"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+    
+    
+    
+    
+    <form id="ApointmentServicesValidate">
+        <field name="password">
+            <!-- handling erros/avoiding crashes of the system. Also I use counts so the dialog, 
+                 when a user responds 'wrong' to the system, feels more natural -->
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        This is a wrong password. Please try again!
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time you input a wrong password. The third time
+                        is your last.
+                    </sentence>
+                </prompt>
+            </nomatch>   
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        It seems you dont know your password. Please contact reception and come again later.
+                        GoodBye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please say or type your password.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <catch event="exit">
+                <prompt>
+                    <Sentence>
+                        Thanks for calling.Goodbye!
+                    </Sentence>
+                </prompt>
+                <exit/>
+            </catch>
+
+            <prompt>
+                <prosody rate="normal" volume="soft">
+                    <paragraph>
+                        <sentence>
+                            <emphasis>
+                                Please specify the password
+                            </emphasis>
+                        </sentence>
+                    </paragraph>
+                </prosody> 
+            </prompt>
+
+            <catch event="exit">
+                <prompt>
+                    <Sentence>
+                        Thanks for calling.Goodbye!
+                    </Sentence>
+                </prompt>
+                <exit/>
+            </catch>
+
+            <!-- This are the options of the passwords.vxml -->
+            <option dtmf="123" value="user1"> one two three </option>
+            <option dtmf="456" value="user2"> four five six </option>
+
+            
+
+            <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
+            <filled>
+                <if cond="password=='user1' || password=='user2' ">
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You will now able to proceed.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="ApointmentOptions.vxml"/> 
+                </if>
+            </filled>
+        </field>
+    </form>
+
+    <!-- This is used when a user wants to 'exit' just says any of the following -->
+    <link event="exit">
+        <grammar root="exitGR">
+            <rule id="exitGR" scope="public">
+                <one-of>
+                    <item>exit</item>
+                    <item>quit</item>
+                    <item>Bye</item>
+                    <item>GoodBye</item>
+                    <item>See you</item>
+                </one-of>
+            </rule>
+        </grammar>
+    </link>
+
+  
+</vxml>

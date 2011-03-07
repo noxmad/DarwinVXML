@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+
+    <form id="start">
+        <field name="MenuOptions">
+            <prompt>
+                <break time="1.0s"/>
+                <voice category="adult" gender="neutral">
+                    <prosody rate="normal" volume="soft">
+                        <paragraph>
+                            <sentence>
+                                Hello, Welcome to the University of Sheffield Health Services!
+                                Please, <emphasis> <enumerate/> </emphasis>
+                            </sentence>
+                        </paragraph>
+                    </prosody>
+                </voice>
+            </prompt>
+
+            <!-- This are the options of the root.vxml -->
+            <option dtmf="1" value="service1"> Apointment Services</option>
+            <option dtmf="2" value="service2"> Speak to Reception </option>
+            
+
+
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        I did not understand you. Please say the name of a service or
+                        press the number of the service you want. For help please say help
+                        to remind you the choices.
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                This is the second time I did not understand you. Please say the name of a service
+                or press the number of the service you want. If you do not understand me please
+                say help.
+            </nomatch>
+            <nomatch count="3">
+                It seems you are not willing to use our services. GoodBye!
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please choose one service.
+                        If you want me to remind you the services, please say Help.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+            
+            <catch event="exit">
+                <prompt> Thanks for calling.Goodbye! </prompt>
+                <exit/>
+            </catch>
+
+            <!--When a user needs help - just says help....-->
+            <help>
+                <prompt>
+                    <prosody rate="normal" volume="soft">
+                        <paragraph>
+                            <sentence>
+                                You have to, <emphasis>  <enumerate/></emphasis>
+                                Now please choose.
+                            </sentence>
+                           
+                        </paragraph>
+                    </prosody>
+                </prompt>
+            </help>
+
+
+            <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
+            <filled>
+                <if cond="MenuOptions=='service1'">
+                        <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected Apointment services.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="ApointmentServices.vxml"/>
+                   
+                <elseif cond="MenuOptions=='service2'"/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to Speak to Reception.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="SpeakToReception.vxml"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+
+    
+
+    <link event="help">
+        <grammar root="main">
+            <rule id="main" scope="public">
+                <item repeat="0-1"> please </item>
+                <item repeat="0-1"> I need </item>
+                help
+                <item repeat="0-1"> me </item>
+                <item repeat="0-1"> please </item>
+            </rule>
+        </grammar>
+    </link>
+    <link event="exit">
+        <grammar root="main">
+            <rule id="main" scope="public">
+                <one-of>
+                    <item>exit</item>
+                    <item>quit</item>
+                    <item>Bye</item>
+                    <item>GoodBye</item>
+                    <item>See you</item>
+                </one-of>
+            </rule>
+        </grammar>
+    </link>
+
+
+</vxml>
