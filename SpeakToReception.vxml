@@ -2,11 +2,14 @@
 <vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
     
     <form id="SpeakToReceptionStart">
-        <!-- This block uses a java script to tell you the time-->
+        
+        <!-- JavaScript to get the current time-->
         <block name="time">
+            
             <var name="hours"/>
             <var name="minutes"/>
             <var name="seconds"/>
+        
             <script>
                 var d=new Date();
                 hours=d.getHours();
@@ -14,19 +17,27 @@
             </script>
 
             <prompt>
-                Welcome to Reception. The time is now <value expr="hours"/> hours
-                <value expr="minutes"/> minutes
+                <sentence>
+                    Welcome to Reception. The time is now <value expr="hours"/> hours
+                    <value expr="minutes"/> minutes
+                </sentence>
             </prompt>
 
+            
         <!-- Checks the opening times and responds according to those -->
         <if cond="hours == '17' || hours == '18' || hours == '19' || hours == '20' || hours == '21' || hours == '22' || hours == '23' || hours == '24' || hours == '01' || hours == '02' || hours == '03' || hours == '04' || hours == '05' || hours == '06' || hours == '07' || hours == '08' ">
             <prompt>
-                The reception is now closed. It is open during 09 until 16 o'clock.    
+                <sentence>
+                    The reception is now closed. It is open during 09 until 16 o'clock.
+                </sentence>
             </prompt>
-                <goto next="#GoToMainMenu"/>
+            <goto next="#GoToMainMenu"/>
         <else/>
             <prompt>
-                The reception is now open.
+                <sentence>
+                    The reception is now open.
+                    <!--can speak to a person-->
+                </sentence>
             </prompt>
         </if> 
         </block>
@@ -35,10 +46,59 @@
     <!-- form to collect user respond if he/she wants to get to the main menu WHEN the reception is closed -->
     <form id="GoToMainMenu">
         <field name="answer">
-            <noinput> Hey, are you there! </noinput>
-            <nomatch> say 'yes' or 'no' </nomatch>
+            <!--error handling-->
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        I did not understand you. Please try again!
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        I did not understand you again.Please say yes or No.
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="3">
+                I am sorry but I cant understand you. GoodBye!
+                <exit/>
+            </nomatch>
 
-            <prompt> Would you like to go to the main menu ? </prompt>
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please say or type your password.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    Would you like to go to the main menu ?
+                </sentence>
+            </prompt>
 
             <grammar root="GoToMainMenuGR" tag-format="semantics/1.0-literals">
                 <rule id="GoToMainMenuGR" scope="public">
@@ -72,11 +132,19 @@
 
             <filled>
                 <if cond="answer=='yes'">
-                    You will now transfered to the root menu
+                    <prompt>
+                        <sentence>
+                            Ok. you are going now to the root menu
+                        </sentence>
+                    </prompt>
                     <goto next="Root.vxml"/>
                     
                 <else/>
-                    Since you said no, Goodbye!
+                    <prompt>
+                        <sentence>
+                            Ok thanks for calling.
+                        </sentence>
+                    </prompt>
                 </if>
             </filled>
         </field>

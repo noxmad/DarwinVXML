@@ -17,12 +17,14 @@
                 </voice>
             </prompt>
 
-            <!-- This are the options of the root.vxml -->
+            
+            <!-- Main options / either speech or DTMF -->
             <option dtmf="1" value="service1"> Apointment Services</option>
             <option dtmf="2" value="service2"> Speak to Reception </option>
+
+
             
-
-
+            <!-- Error handling techniques -->
             <nomatch>
                 <prompt>
                     <break time="0.5s"/>
@@ -35,12 +37,20 @@
                 <reprompt/>
             </nomatch>
             <nomatch count="2">
-                This is the second time I did not understand you. Please say the name of a service
-                or press the number of the service you want. If you do not understand me please
-                say help.
+                <prompt>
+                    <sentence>
+                        This is the second time I did not understand you. Please say the name of a service
+                        or press the number of the service you want. If you do not understand me please
+                        say help.
+                    </sentence>
+                </prompt>
             </nomatch>
             <nomatch count="3">
-                It seems you are not willing to use our services. GoodBye!
+                <prompt>
+                    <sentence>
+                        It seems you are not willing to use our services. GoodBye!
+                    </sentence>
+                </prompt>
                 <exit/>
             </nomatch>
 
@@ -70,35 +80,33 @@
                 </prompt>
                 <exit/>
             </noinput>
+
             
+            <!-- Help/Exit events-when a user says the system exit or says the help message-->
             <catch event="exit">
                 <prompt> Thanks for calling.Goodbye! </prompt>
                 <exit/>
             </catch>
 
-            <!--When a user needs help - just says help....-->
             <help>
                 <prompt>
                     <prosody rate="normal" volume="soft">
-                        <paragraph>
                             <sentence>
                                 You have to, <emphasis>  <enumerate/></emphasis>
                                 Now please choose.
                             </sentence>
-                           
-                        </paragraph>
                     </prosody>
                 </prompt>
             </help>
 
 
-            <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
+            <!-- according to the condition respond -->
             <filled>
                 <if cond="MenuOptions=='service1'">
                         <prompt>
                         <paragraph>
                             <sentence>
-                                You have selected Apointment services.
+                                Ok, you have selected Apointment services.
                             </sentence>
                         </paragraph>
                     </prompt>
@@ -108,7 +116,7 @@
                     <prompt>
                         <paragraph>
                             <sentence>
-                                You have selected to Speak to Reception.
+                                Ok, you have selected to Speak to Reception.
                             </sentence>
                         </paragraph>
                     </prompt>
@@ -119,7 +127,8 @@
     </form>
 
     
-
+    
+    <!--Events help and exit with grammars for taking specific words-->
     <link event="help">
         <grammar root="main">
             <rule id="main" scope="public">

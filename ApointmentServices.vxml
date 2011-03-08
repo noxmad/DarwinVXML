@@ -2,15 +2,16 @@
 <vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
 
 
-    <!-- form to collect user respond if he/she wants to get to the main menu WHEN the reception is closed -->
+    <!-- before going to appointment options ask for user pass-->
     <form id="AskUserForPass">
         <field name="answer">
             
+            <!--error handling-->
             <nomatch>
                 <prompt>
                     <break time="0.5s"/>
                     <sentence>
-                        This is a wrong password. Please try again!
+                        I did not understand you. Please try again!
                     </sentence>
                 </prompt>
                 <reprompt/>
@@ -18,14 +19,12 @@
             <nomatch count="2">
                 <prompt>
                     <sentence>
-                        This is the second time you input a wrong password. The third time is 
-                        your last.
+                        I did not understand you again.Please say yes or No.
                     </sentence>
                 </prompt>
             </nomatch>        
             <nomatch count="3">
-                It seems you dont know your password. Please contact reception and come again later.
-                GoodBye!
+                I am sorry but I cant understand you. GoodBye!
                 <exit/>
             </nomatch>
             
@@ -55,6 +54,7 @@
                 <exit/>
             </noinput>
 
+            <!--main message of the form-->
             <prompt>
                 <sentence>
                     In order to proceed to the appointment services you must have a password.
@@ -62,6 +62,7 @@
                 </sentence>
             </prompt>
 
+            <!--inline grammar for checking user's respnse-->
             <grammar root="AskForPassGR" tag-format="semantics/1.0-literals">
                 <rule id="AskForPassGR" scope="public">
                     <one-of>
@@ -116,11 +117,10 @@
     
     
     
-    
+    <!--validate password form-->
     <form id="ApointmentServicesValidate">
         <field name="password">
-            <!-- handling erros/avoiding crashes of the system. Also I use counts so the dialog, 
-                 when a user responds 'wrong' to the system, feels more natural -->
+            <!--error handling -->
             <nomatch>
                 <prompt>
                     <break time="0.5s"/>
@@ -184,25 +184,13 @@
 
             <prompt>
                 <prosody rate="normal" volume="soft">
-                    <paragraph>
-                        <sentence>
-                            <emphasis>
-                                Please specify the password
-                            </emphasis>
-                        </sentence>
-                    </paragraph>
+                    <sentence>
+                        <emphasis>Please, specify the password</emphasis>
+                    </sentence>
                 </prosody> 
             </prompt>
 
-            <catch event="exit">
-                <prompt>
-                    <Sentence>
-                        Thanks for calling.Goodbye!
-                    </Sentence>
-                </prompt>
-                <exit/>
-            </catch>
-
+    
             <!-- This are the options of the passwords.vxml -->
             <option dtmf="123" value="user1"> one two three </option>
             <option dtmf="456" value="user2"> four five six </option>
@@ -213,11 +201,9 @@
             <filled>
                 <if cond="password=='user1' || password=='user2' ">
                     <prompt>
-                        <paragraph>
-                            <sentence>
-                                You will now able to proceed.
-                            </sentence>
-                        </paragraph>
+                        <sentence>
+                            You are now allowed to proceed.
+                        </sentence>
                     </prompt>
                     <goto next="ApointmentOptions.vxml"/> 
                 </if>

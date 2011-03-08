@@ -82,35 +82,165 @@
                     <prompt>
                             <sentence>
                                 You have selected <say-as type="date"> May 10, 2010 </say-as>
-                                at 15:00 o clock.
+                                at three o clock.
                             </sentence>
                     </prompt>
-                    <goto next="#BookingApointment"/>
+                    <goto next="#summary"/>
 
                     <elseif cond="getDate=='date2'"/>
                     <prompt>
                         <sentence>
                             You have selected <say-as type="date"> May 10, 2010 </say-as>
-                            at 15:00 o clock.
+                            at four o clock.
                         </sentence>
                     </prompt>
-                    <goto next="#BookingApointment"/>
+                    <goto next="#summary"/>
 
                     <elseif cond="getDate=='date3'"/>
                     <prompt>
                         <sentence>
                             You have selected <say-as type="date"> May 10, 2010 </say-as>
-                            at 15:00 o clock.
+                            at five o clock.
                         </sentence>
                     </prompt>
-                    <goto next="#BookingApointment"/>
-
-
+                    <goto next="#summary"/>
                 </if>
 
             </filled>
         </field>
-
-
     </form>
+
+
+    <form id="summary">
+        <field name="answer">
+
+            <nomatch>
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        I did not understand you.Please repeat
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I dont understand. The third time is
+                        your last.
+                    </sentence>
+                </prompt>
+            </nomatch>
+            <nomatch count="3">
+                I am sorry but I dont understand you.Come again later.
+                GoodBye!
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. 
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    <emphasis> Are the booking details correct ? Yes or No or Menu</emphasis>
+                </sentence>
+            </prompt>
+
+            <grammar root="summaryGR" tag-format="semantics/1.0-literals">
+                <rule id="summaryGR" scope="public">
+                    <one-of>
+                        <item>
+                            <ruleref uri="#yes"/>
+                            <tag>yes</tag>
+                        </item>
+                        <item>
+                            <ruleref uri="#no"/>
+                            <tag>no</tag>
+                        </item>
+                        <item>
+                            <ruleref uri="#menu"/>
+                            <tag>menu</tag>
+                        </item>
+                    </one-of>
+                </rule>
+                <rule id="yes">
+                    <one-of>
+                        <item>yes</item>
+                        <item>yeah</item>
+                        <item>yep</item>
+                        <item>sure</item>
+                    </one-of>
+                </rule>
+                <rule id="no">
+                    <one-of>
+                        <item>no</item>
+                        <item>not</item>
+                        <item>nope</item>
+                    </one-of>
+                </rule>
+                <rule id="menu">
+                    <one-of>
+                        <item>menu</item>
+                        <item>go.menu</item>
+                        <item>root</item>
+                    </one-of>
+                </rule>
+            </grammar>
+
+            <filled>
+                <if cond="answer=='yes'">
+                    <prompt>
+                        <sentence>
+                            Ok your appointment will be booked now. Thanks for calling 
+                        </sentence>
+                    </prompt>
+                    <exit/>
+                
+                <elseif cond="answer=='no'"/>
+                    <prompt>
+                        <sentence>
+                            Ok you can start over by going to the start of the booking.
+                        </sentence>
+                    </prompt>
+                    <goto next="BookApointment.vxml"/>
+
+
+                    <else/>
+                    <prompt>
+                        <sentence>
+                            Ok you want to go to the main menu
+                        </sentence>
+                    </prompt>
+                    <goto next="Root.vxml"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+
+
+
+
 </vxml>
