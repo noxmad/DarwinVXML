@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+
+    <form id="checkAppointment">
+
+        <field name="checkAppoint">
+
+            <nomatch count="1">
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        Please select one of the two options
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I did not understand.Please select either to Book an apointment
+                        or to return to the main menu.
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        It seems you are not willing to use our services. Goodbye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please try again.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    Do you have an appointment?
+                </sentence>
+            </prompt>
+
+            <grammar root="AppointmentGR" tag-format="semantics/1.0-literals">
+                <rule id="AppointmentGR" scope="public">
+                    <one-of>
+                        <item>
+                            <ruleref uri="#yes"/>
+                            <tag>yes</tag>
+                        </item>
+                        <item>
+                            <ruleref uri="#no"/>
+                            <tag>no</tag>
+                        </item>
+                    </one-of>
+                </rule>
+                <rule id="yes">
+                    <one-of>
+                        <item>yes</item>
+                        <item>yeah</item>
+                        <item>yep</item>
+                        <item>sure</item>
+                    </one-of>
+                </rule>
+                <rule id="no">
+                    <one-of>
+                        <item>no</item>
+                        <item>not</item>
+                        <item>nope</item>
+                    </one-of>
+                </rule>
+            </grammar>
+
+            <filled>
+                <if cond="checkAppoint=='yes'">
+                    <goto next="#ChoseOption"/>
+                <else/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                Cause you don't have appointment, return to Main menu.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="Root.vxml"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+
+    <form id="ChoseOption">
+        <field name="ChoseOption">
+
+            <nomatch count="1">
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        Please select one of the three options
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I did not understand.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </nomatch>
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        It seems you are not willing to use our services. Goodbye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please try again.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    Please, <emphasis>
+                        <enumerate/>
+                    </emphasis>
+                </sentence>
+            </prompt>
+
+            <!-- This are the options of the root.vxml -->
+            <option dtmf="1" value="GetDetails"> Get Details </option>
+            <option dtmf="2" value="CancelAppointment"> Cancel Appointment </option>
+            <option dtmf="3" value="ReturnToMainMenu"> Return To Main Menu </option>
+
+            <filled>
+                <if cond="ChoseOption=='GetDetails' ">
+
+                    <goto next="#ReadAppointment"/>
+
+                    <elseif cond="ChoseOption=='CancelAppointment' "/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to Cancel the apointment.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="#CancelAppointment"/>
+
+                    <else/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to return To Main Menu.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="Root.vxml"/>
+
+                </if>
+            </filled>
+        </field>
+    </form>
+
+    <form id="ReadAppointment">
+        <block>
+            <prompt>
+                Your appointment detail is time,date, with doctor.
+            </prompt>
+            <goto next="#ChoseOption" />
+        </block>
+    </form>
+
+
+    <form id="CancelAppointment">
+        <field name="CancelAppointment">
+            <prompt>
+                <sentence>
+                    Are your sure that you want to cancel your appointment?
+                </sentence>
+            </prompt>
+
+            <grammar root="CancelAppointmentGR" tag-format="semantics/1.0-literals">
+                <rule id="CancelAppointmentGR" scope="public">
+                    <one-of>
+                        <item>
+                            <ruleref uri="#yes"/>
+                            <tag>yes</tag>
+                        </item>
+                        <item>
+                            <ruleref uri="#no"/>
+                            <tag>no</tag>
+                        </item>
+                    </one-of>
+                </rule>
+                <rule id="yes">
+                    <one-of>
+                        <item>yes</item>
+                        <item>yeah</item>
+                        <item>yep</item>
+                        <item>sure</item>
+                    </one-of>
+                </rule>
+                <rule id="no">
+                    <one-of>
+                        <item>no</item>
+                        <item>not</item>
+                        <item>nope</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="CancelAppointment=='yes'">
+                    <goto next="#CancelAppointmentConfirm"/>
+                    <else/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You dont want to Cancel your appointment, return to Main menu.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="Root.vxml"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+
+    <form id="CancelAppointmentConfirm">
+        <field name="CancelAppointmentConfirm">
+
+            <nomatch count="1">
+                <prompt>
+                    <break time="0.5s"/>
+                    <sentence>
+                        Please select one of the three options
+                    </sentence>
+                </prompt>
+                <reprompt/>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>
+                    <sentence>
+                        This is the second time I did not understand.Please select either to Book an apointment
+                        or to return to the main menu.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </nomatch>
+            <nomatch count="3">
+                <prompt>
+                    <sentence>
+                        It seems you are not willing to use our services. Goodbye!
+                    </sentence>
+                </prompt>
+                <exit/>
+            </nomatch>
+
+            <noinput count="1">
+                <prompt>
+                    <break time="1.5s"/>
+                    <sentence>
+                        I am sorry but I did not hear anything. Please try again.
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="2">
+                <prompt>
+                    <sentence>
+                        I did not hear anything again, Please speak louder
+                    </sentence>
+                </prompt>
+                <remprompt/>
+            </noinput>
+            <noinput count="3">
+                <prompt>
+                    <sentence>
+                        It seems you there is no one there. Goodbye
+                    </sentence>
+                </prompt>
+                <exit/>
+            </noinput>
+
+            <prompt>
+                <sentence>
+                    Good, your Appointment has been canceled.
+                </sentence>
+                <sentence>
+                    Please, <emphasis>
+                        <enumerate/>
+                    </emphasis>
+                </sentence>
+            </prompt>
+
+            <!-- This are the options of the root.vxml -->
+            <option dtmf="1" value="BookAppointment"> Book appointment </option>
+            <option dtmf="2" value="ReturnToMainMenu"> Return To Main Menu </option>
+
+
+            <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
+            <filled>
+                <if cond="CancelAppointmentConfirm=='BookAppointment' ">
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to book an apointment.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="BookAppointment.vxml"/>
+
+                    <else/>
+                    <prompt>
+                        <paragraph>
+                            <sentence>
+                                You have selected to return To Main Menu.
+                            </sentence>
+                        </paragraph>
+                    </prompt>
+                    <goto next="Root.vxml"/>
+
+                </if>
+            </filled>
+        </field>
+    </form>
+
+
+</vxml>

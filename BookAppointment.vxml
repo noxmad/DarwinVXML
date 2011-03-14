@@ -109,14 +109,14 @@
                             </sentence>
                         </paragraph>
                     </prompt>
-                    <goto next="CheckCancelApoint.vxml"/>
+                    <goto next="CheckCancelAppoint.vxml"/>
                     
                 <!--Scenario 2 starts-->
                 <else/>
                     <prompt>
                         <paragraph>
                             <sentence>
-                                You do not have any apointments.
+                                You do not have any appointments.
                             </sentence>
                         </paragraph>
                     </prompt>

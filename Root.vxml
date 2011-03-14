@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿ÿ<?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
 
     <form id="start">
@@ -10,20 +10,22 @@
                         <paragraph>
                             <sentence>
                                 Hello, Welcome to the University of Sheffield Health Services!
-                                Please, <emphasis> <enumerate/> </emphasis>
+                                Please, <emphasis>
+                                    <enumerate/>
+                                </emphasis>
                             </sentence>
                         </paragraph>
                     </prosody>
                 </voice>
             </prompt>
 
-            
+
             <!-- Main options / either speech or DTMF -->
             <option dtmf="1" value="service1"> Apointment Services</option>
             <option dtmf="2" value="service2"> Speak to Reception </option>
 
 
-            
+
             <!-- Error handling techniques -->
             <nomatch>
                 <prompt>
@@ -81,7 +83,7 @@
                 <exit/>
             </noinput>
 
-            
+
             <!-- Help/Exit events-when a user says the system exit or says the help message-->
             <catch event="exit">
                 <prompt> Thanks for calling.Goodbye! </prompt>
@@ -91,10 +93,12 @@
             <help>
                 <prompt>
                     <prosody rate="normal" volume="soft">
-                            <sentence>
-                                You have to, <emphasis>  <enumerate/></emphasis>
-                                Now please choose.
-                            </sentence>
+                        <sentence>
+                            You have to, <emphasis>
+                                <enumerate/>
+                            </emphasis>
+                            Now please choose.
+                        </sentence>
                     </prosody>
                 </prompt>
             </help>
@@ -103,16 +107,16 @@
             <!-- according to the condition respond -->
             <filled>
                 <if cond="MenuOptions=='service1'">
-                        <prompt>
+                    <prompt>
                         <paragraph>
                             <sentence>
                                 Ok, you have selected Apointment services.
                             </sentence>
                         </paragraph>
                     </prompt>
-                    <goto next="ApointmentServices.vxml"/>
-                   
-                <elseif cond="MenuOptions=='service2'"/>
+                    <goto next="AppointmentServices.vxml"/>
+
+                    <elseif cond="MenuOptions=='service2'"/>
                     <prompt>
                         <paragraph>
                             <sentence>
@@ -126,8 +130,8 @@
         </field>
     </form>
 
-    
-    
+
+
     <!--Events help and exit with grammars for taking specific words-->
     <link event="help">
         <grammar root="main">

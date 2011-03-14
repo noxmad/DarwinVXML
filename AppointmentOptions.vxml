@@ -64,8 +64,8 @@
             </prompt>
 
             <!-- Apointment Options -->
-            <option dtmf="1" value="BookApointment"> Book apointment </option>
-            <option dtmf="2" value="CheckCancellApointment"> Check - Cancel apointment </option>
+            <option dtmf="1" value="BookApointment"> Book appointment </option>
+            <option dtmf="2" value="CheckCancellApointment"> Check - Cancel appointment </option>
 
 
             <!--use of ECMAScript/Javascript when the condition is..then the desired choice.. -->
@@ -78,7 +78,7 @@
                             </sentence>
                         </paragraph>
                     </prompt>
-                    <goto next="BookApointment.vxml"/>
+                    <goto next="BookAppointment.vxml"/>
                   
                  <else/>
                     <prompt>
@@ -88,7 +88,7 @@
                             </sentence>
                         </paragraph>
                     </prompt>
-                    <goto next="Ruoran-Noa...vxml"/>
+                    <goto next="CheckCancelAppoint.vxml"/>
                     
                 </if>
             </filled>

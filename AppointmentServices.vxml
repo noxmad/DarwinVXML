@@ -100,7 +100,7 @@
                             You can proceed to the verification step.
                         </sentence>
                     </prompt>
-                    <goto next="#ApointmentServicesValidate"/>
+                    <goto next="#AppointmentServicesValidate"/>
 
                     <else/>
                     <prompt>
@@ -118,7 +118,7 @@
     
     
     <!--validate password form-->
-    <form id="ApointmentServicesValidate">
+    <form id="AppointmentServicesValidate">
         <field name="password">
             <!--error handling -->
             <nomatch>
@@ -205,7 +205,7 @@
                             You are now allowed to proceed.
                         </sentence>
                     </prompt>
-                    <goto next="ApointmentOptions.vxml"/> 
+                    <goto next="AppointmentOptions.vxml"/> 
                 </if>
             </filled>
         </field>
